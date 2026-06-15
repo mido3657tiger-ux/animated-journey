@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولد الفواتير العربي</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Cairo', sans-serif; background: #0f0f1a; color: #fff; padding: 20px; }
+  h1 { text-align: center; color: #a855f7; margin-bottom: 30px; font-size: 2rem; }
+  .container { max-width: 800px; margin: auto; }
+  .card { background: #1a1a2e; border-radius: 12px; padding: 25px; margin-bottom: 20px; border: 1px solid #a855f7; }
+  label { display: block; margin-bottom: 6px; color: #ccc; font-size: 14px; }
+  input, textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #0f0f1a; color: #fff; font-family: 'Cairo', sans-serif; font-size: 14px; margin-bottom: 15px; }
+  .row { display: flex; gap: 15px; }
+  .row > div { flex: 1; }
+  .item-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .item-row input { margin-bottom: 0; }
+  .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: bold; }
+  .btn-add { background: #1a1a2e; color: #a855f7; border: 1px solid #a855f7; }
+  .btn-remove { background: #ff4444; color: #fff; padding: 10px; }
+  .btn-generate { background: #a855f7; color: #fff; width: 100%; padding: 15px; font-size: 16px; margin-top: 10px; }
+  /* Invoice Preview */
+  #invoice-preview { display: none; background: #fff; color: #000; padding: 40px; border-radius: 12px; margin-top: 20px; }
+  #invoice-preview h2 { color: #a855f7; font-size: 2rem; margin-bottom: 5px; }
+  .inv-header { display: flex; justify-content: space-between; margin-bottom: 30px; }
+  .inv-info p { margin-bottom: 5px; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  th { background: #a855f7; color: #fff; padding: 10px; text-align: right; }
+  td { padding: 10px; border-bottom: 1px solid #eee; text-align: right; }
+  .total-row td { font-weight: bold; font-size: 16px; background: #f5f5f5; }
+  .btn-print { background: #a855f7; color: #fff; width: 100%; padding: 15px; font-size: 16px; margin-top: 15px; border: none; border-radius: 8px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: bold; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <h1>🧾 مولد الفواتير العربي</h1>
+
+  <div class="card">
+    <h3 style="color:#a855f7;margin-bottom:15px">بيانات الشركة</h3>
+    <div class="row">
+      <div><label>اسم الشركة</label><input id="company-name" placeholder="Tiger-X Studio"></div>
+      <div><label>رقم الهاتف</label><input id="company-phone" placeholder="01xxxxxxxxx"></div>
+    </div>
+    <label>العنوان</label>
+    <input id="company-address" placeholder="المنصورة، مصر">
+  </div>
+
+  <div class="card">
+    <h3 style="color:#a855f7;margin-bottom:15px">بيانات العميل</h3>
+    <div class="row">
+      <div><label>اسم العميل</label><input id="client-name" placeholder="اسم العميل"></div>
+      <div><label>رقم الهاتف</label><input id="client-phone" placeholder="01xxxxxxxxx"></div>
+    </div>
+    <div class="row">
+      <div><label>رقم الفاتورة</label><input id="inv-number" placeholder="001"></div>
+      <div><label>التاريخ</label><input id="inv-date" type="date"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:#a855f7;margin-bottom:15px">المنتجات / الخدمات</h3>
+    <div id="items-container">
+      <div class="item-row">
+        <input placeholder="اسم المنتج أو الخدمة" class="item-name" style="flex:3">
+        <input placeholder="الكمية" class="item-qty" type="number" min="1" value="1" style="flex:1">
+        <input placeholder="السعر (ج.م)" class="item-price" type="number" style="flex:1">
+        <button class="btn btn-remove" onclick="removeItem(this)">✕</button>
+      </div>
+    </div>
+    <button class="btn btn-add" onclick="addItem()" style="margin-top:10px">+ إضافة منتج</button>
+  </div>
+
+  <div class="card">
+    <label>ملاحظات (اختياري)</label>
+    <textarea id="notes" rows="3" placeholder="شكراً لتعاملكم معنا..."></textarea>
+    <button class="btn btn-generate" onclick="generateInvoice()">🧾 إنشاء الفاتورة</button>
+  </div>
+
+  <div id="invoice-preview">
+    <div class="inv-header">
+      <div>
+        <h2 id="prev-company">Tiger-X Studio</h2>
+        <p id="prev-address"></p>
+        <p id="prev-company-phone"></p>
+      </div>
+      <div style="text-align:left">
+        <h3 style="color:#a855f7">فاتورة</h3>
+        <p id="prev-inv-number"></p>
+        <p id="prev-date"></p>
+      </div>
+    </div>
+    <div class="inv-info" style="margin-bottom:20px">
+      <p><strong>العميل:</strong> <span id="prev-client"></span></p>
+      <p><strong>هاتف:</strong> <span id="prev-client-phone"></span></p>
+    </div>
+    <table>
+      <thead><tr><th>المنتج/الخدمة</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+      <tbody id="prev-items"></tbody>
+      <tfoot>
+        <tr class="total-row"><td colspan="3">الإجمالي الكلي</td><td id="prev-total"></td></tr>
+      </tfoot>
+    </table>
+    <p id="prev-notes" style="color:#666;font-size:14px"></p>
+    <button class="btn-print" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+  </div>
+</div>
+
+<script>
+  document.getElementById('inv-date').valueAsDate = new Date();
+
+  function addItem() {
+    const div = document.createElement('div');
+    div.className = 'item-row';
+    div.innerHTML = `
+      <input placeholder="اسم المنتج أو الخدمة" class="item-name" style="flex:3">
+      <input placeholder="الكمية" class="item-qty" type="number" min="1" value="1" style="flex:1">
+      <input placeholder="السعر (ج.م)" class="item-price" type="number" style="flex:1">
+      <button class="btn btn-remove" onclick="removeItem(this)">✕</button>
+    `;
+    document.getElementById('items-container').appendChild(div);
+  }
+
+  function removeItem(btn) {
+    const rows = document.querySelectorAll('.item-row');
+    if (rows.length > 1) btn.parentElement.remove();
+  }
+
+  function generateInvoice() {
+    const names = document.querySelectorAll('.item-name');
+    const qtys = document.querySelectorAll('.item-qty');
+    const prices = document.querySelectorAll('.item-price');
+
+    let rows = '', total = 0;
+    names.forEach((n, i) => {
+      const qty = parseFloat(qtys[i].value) || 1;
+      const price = parseFloat(prices[i].value) || 0;
+      const sub = qty * price;
+      total += sub;
+      rows += `<tr><td>${n.value}</td><td>${qty}</td><td>${price.toLocaleString()} ج.م</td><td>${sub.toLocaleString()} ج.م</td></tr>`;
+    });
+
+    document.getElementById('prev-company').textContent = document.getElementById('company-name').value || 'Tiger-X Studio';
+    document.getElementById('prev-address').textContent = document.getElementById('company-address').value;
+    document.getElementById('prev-company-phone').textContent = document.getElementById('company-phone').value;
+    document.getElementById('prev-inv-number').textContent = 'رقم: ' + (document.getElementById('inv-number').value || '001');
+    document.getElementById('prev-date').textContent = 'التاريخ: ' + document.getElementById('inv-date').value;
+    document.getElementById('prev-client').textContent = document.getElementById('client-name').value;
+    document.getElementById('prev-client-phone').textContent = document.getElementById('client-phone').value;
+    document.getElementById('prev-items').innerHTML = rows;
+    document.getElementById('prev-total').textContent = total.toLocaleString() + ' ج.م';
+    document.getElementById('prev-notes').textContent = document.getElementById('notes').value;
+
+    const preview = document.getElementById('invoice-preview');
+    preview.style.display = 'block';
+    preview.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+      </html>
