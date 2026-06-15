@@ -91,7 +91,7 @@ input::placeholder,textarea::placeholder{color:#2a2840}
 .itm:hover{border-color:#c9a84c20}
 .ig{display:grid;grid-template-columns:3fr 80px 100px auto auto;gap:10px;align-items:center}
 .ig input{margin-bottom:0}
-.isum{background:#c9a84c12;border:1px solid #c9a84c25;color:var(--gold);
+.isum it{background:#c9a84c12;border:1px solid #c9a84c25;color:var(--gold);
   border-radius:8px;padding:13px 10px;font-size:13px;font-weight:700;
   text-align:center;white-space:nowrap}
 .bdel{background:#e74c3c12;border:1px solid #e74c3c25;color:var(--red);
@@ -198,6 +198,14 @@ tbody tr:hover td{background:#fafafd}
 .ba-p{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000}
 .ba-s{background:#111;color:#fff}
 
+/* FOOTER BRANDING */
+.ftr-brand{text-align:center;padding:35px 20px;margin-top:20px;border-top:1px solid #c9a84c15;font-size:13px;color:var(--muted)}
+.ftr-brand a{color:var(--gold);text-decoration:none;font-weight:700;transition:color .25s}
+.ftr-brand a:hover{color:var(--gold2)}
+.ftr-links{margin-top:10px;display:flex;justify-content:center;gap:15px;font-size:12px}
+.ftr-links a{color:var(--muted)}
+.ftr-links a:hover{color:var(--text)}
+
 /* TOAST */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
   background:#111;color:var(--gold);padding:12px 26px;border-radius:30px;
@@ -232,7 +240,6 @@ tbody tr:hover td{background:#fafafd}
 
 <div class="wrap">
 
-  <!-- شركة -->
   <div class="card">
     <div class="sec">🏢 بيانات شركتك</div>
     <div class="logo-z" onclick="document.getElementById('li').click()">
@@ -250,7 +257,6 @@ tbody tr:hover td{background:#fafafd}
     </div>
   </div>
 
-  <!-- عميل -->
   <div class="card">
     <div class="sec">👤 بيانات العميل</div>
     <div class="g2">
@@ -267,7 +273,7 @@ tbody tr:hover td{background:#fafafd}
           <option value="$">🇺🇸 دولار</option>
           <option value="€">🇪🇺 يورو</option>
           <option value="ر.س">🇸🇦 ريال</option>
-          <option value="د.إ">🇦🇪 درهم</option>
+          <option value="د.إ">🇦酋 درهم</option>
         </select>
       </div>
     </div>
@@ -292,7 +298,6 @@ tbody tr:hover td{background:#fafafd}
     </div>
   </div>
 
-  <!-- منتجات -->
   <div class="card">
     <div class="sec">📦 الخدمات والمنتجات</div>
     <div class="ilbl">
@@ -316,14 +321,12 @@ tbody tr:hover td{background:#fafafd}
     </div>
   </div>
 
-  <!-- ملاحظات -->
   <div class="card">
     <div class="sec">📝 ملاحظات</div>
     <textarea id="nts" rows="3" placeholder="شكراً لثقتكم بـ Tiger-X Studio"></textarea>
     <button class="bgen" onclick="gen()">✦ إصدار الفاتورة ✦</button>
   </div>
 
-  <!-- الفاتورة -->
   <div id="inv">
     <div class="iw">
       <div class="i-bar" id="ibar"></div>
@@ -376,6 +379,16 @@ tbody tr:hover td{background:#fafafd}
       </div>
     </div>
   </div>
+
+  <div class="ftr-brand">
+    <p>بنيت بكل فخر بواسطة <a href="https://github.com/mido3657tiger-ux" target="_blank">Tiger-X Studio</a></p>
+    <div class="ftr-links">
+      <a href="tel:01098113657">📞 مكالمات</a>
+      <a href="https://wa.me/201098113657" target="_blank">💬 واتساب</a>
+      <a href="https://github.com/mido3657tiger-ux" target="_blank">💻 جيت هوب</a>
+    </div>
+  </div>
+
 </div>
 
 <div class="toast" id="tst"></div>
@@ -402,15 +415,6 @@ function ll(inp){
   r.readAsDataURL(inp.files[0]);
 }
 
-function ps(s){
-  ST=s;
-  ['s1','s2','s3'].forEach(id=>$( id).className='st');
-  const mp={w:'s1 sw',p:'s2 sp',c:'s3 sc'};
-  const [id,cls]=mp[s].split(' ');
-  $(id).className='st '+cls;
-}
-
-// Fix ps to handle correctly
 function ps(s){
   ST=s;
   $('s1').className='st'; $('s2').className='st'; $('s3').className='st';
@@ -531,4 +535,4 @@ function sh(){
 }
 </script>
 </body>
-  </html>
+</html>
