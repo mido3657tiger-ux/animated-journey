@@ -3,329 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tiger Invoice Ultra</title>
+<title>مولد الفواتير — Tiger-X</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0b0b14;--surface:#10101f;--card:#15152a;--border:#1f1f3a;
-  --gold:#c8a84b;--gold2:#e8cc7a;--gold3:#8b6e1f;
-  --text:#ede8d5;--muted:#5a5878;--green:#27ae60;--red:#c0392b;
+  --bg:#07070f;
+  --card:#0f0f1e;
+  --card2:#131322;
+  --border:#1c1c32;
+  --gold:#c9a84c;
+  --gold2:#e8cc7a;
+  --gold3:#7a5c1e;
+  --text:#f0ead8;
+  --muted:#52506a;
+  --green:#2ecc71;
+  --red:#e74c3c;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Cairo',sans-serif;background:var(--ink);color:var(--text);min-height:100vh;overflow-x:hidden}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-/* ── AMBIENT GLOW ── */
-body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
-  background:radial-gradient(ellipse 60% 40% at 15% 10%,#c8a84b0a 0%,transparent 60%),
-             radial-gradient(ellipse 50% 30% at 85% 90%,#c8a84b07 0%,transparent 60%);
+/* GLOW */
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,#c9a84c0a 0%,transparent 70%);
   pointer-events:none;z-index:0}
 
-/* ── HEADER ── */
-.hdr{position:relative;z-index:2;text-align:center;padding:44px 20px 30px;
-  border-bottom:1px solid #c8a84b18;
-  background:linear-gradient(180deg,#15152a 0%,transparent 100%)}
-.hdr-eyebrow{font-size:11px;letter-spacing:7px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;opacity:.7}
-.hdr h1{font-family:'Amiri',serif;font-size:2.6rem;font-weight:700;
-  background:linear-gradient(135deg,var(--gold2),var(--gold),var(--gold3));
+/* HEADER */
+.hdr{position:relative;z-index:1;text-align:center;padding:50px 20px 35px;
+  border-bottom:1px solid #c9a84c15}
+.hdr-sub{font-size:11px;letter-spacing:8px;color:var(--gold);opacity:.6;
+  text-transform:uppercase;margin-bottom:14px}
+.hdr h1{font-family:'Amiri',serif;font-size:3rem;font-weight:700;
+  background:linear-gradient(160deg,var(--gold2),var(--gold),var(--gold3));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  line-height:1.2;margin-bottom:8px}
-.hdr p{color:var(--muted);font-size:13px;letter-spacing:.5px}
-.ultra-chip{display:inline-flex;align-items:center;gap:6px;margin-top:12px;
-  padding:5px 18px;border-radius:30px;font-size:11px;font-weight:700;letter-spacing:3px;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000}
+  line-height:1.1;margin-bottom:10px}
+.hdr p{color:var(--muted);font-size:14px}
+.chip{display:inline-block;margin-top:14px;padding:5px 20px;border-radius:30px;
+  border:1px solid var(--gold);color:var(--gold);font-size:11px;letter-spacing:3px;font-weight:700}
 
-/* ── LAYOUT ── */
-.wrap{max-width:880px;margin:auto;padding:28px 16px;position:relative;z-index:1}
+/* WRAP */
+.wrap{max-width:820px;margin:auto;padding:30px 16px;position:relative;z-index:1}
 
-/* ── STEP NAV ── */
-.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:32px;padding:0 10px}
-.stp{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
-.stp-dot{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);
-  background:var(--surface);display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;color:var(--muted);transition:all .4s}
-.stp.on .stp-dot{border-color:var(--gold);background:linear-gradient(135deg,var(--gold3),var(--gold));
-  color:#000;box-shadow:0 0 18px #c8a84b45}
-.stp.dn .stp-dot{border-color:var(--green);background:var(--green);color:#fff;font-size:16px}
-.stp-lbl{font-size:10px;color:var(--muted);letter-spacing:.5px;white-space:nowrap}
-.stp.on .stp-lbl{color:var(--gold)}
-.stp-ln{flex:1;height:1px;background:var(--border);max-width:60px;margin-bottom:22px;transition:background .4s}
-.stp-ln.dn{background:var(--gold)}
+/* SECTION TITLE */
+.sec{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;
+  margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#c9a84c30,transparent)}
 
-/* ── CARDS ── */
-.card{background:var(--card);border-radius:18px;padding:26px;margin-bottom:14px;
-  border:1px solid var(--border);transition:border .3s,box-shadow .3s;
-  animation:up .35s ease both}
-@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.card:hover{border-color:#c8a84b22;box-shadow:0 6px 36px #c8a84b0c}
-.ct{color:var(--gold);font-size:15px;font-weight:700;margin-bottom:20px;
-  display:flex;align-items:center;gap:10px;letter-spacing:.3px}
-.ct::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#c8a84b35,transparent)}
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:24px;margin-bottom:14px;transition:border .3s}
+.card:focus-within{border-color:#c9a84c25}
 
-/* ── INPUTS ── */
-label{display:block;margin-bottom:5px;color:var(--muted);font-size:11px;letter-spacing:.8px;text-transform:uppercase}
-input,textarea,select{width:100%;padding:12px 15px;border-radius:10px;
-  border:1px solid var(--border);background:var(--ink);color:var(--text);
-  font-family:'Cairo',sans-serif;font-size:14px;margin-bottom:14px;transition:all .3s}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px #c8a84b12}
-input::placeholder,textarea::placeholder{color:#2e2e50}
-.row{display:flex;gap:12px}.row>div{flex:1}
+/* INPUTS */
+label{display:block;font-size:11px;color:var(--muted);letter-spacing:.8px;
+  text-transform:uppercase;margin-bottom:6px}
+input,textarea,select{
+  width:100%;padding:13px 16px;border-radius:10px;
+  border:1px solid var(--border);background:#0a0a18;
+  color:var(--text);font-family:'Cairo',sans-serif;font-size:15px;
+  margin-bottom:16px;transition:border .25s,box-shadow .25s}
+input:focus,textarea:focus,select:focus{
+  outline:none;border-color:var(--gold);box-shadow:0 0 0 3px #c9a84c10}
+input::placeholder,textarea::placeholder{color:#2a2840}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 
-/* ── COLOR PICKER ── */
-.clrs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-.clr{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid transparent;
-  transition:all .3s;position:relative;flex-shrink:0}
-.clr.on{border-color:#fff;transform:scale(1.3);box-shadow:0 0 14px currentColor}
-.clr.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;
-  justify-content:center;font-size:13px;color:#fff;font-weight:900;text-shadow:0 1px 4px #0009}
+/* STATUS */
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.st{padding:12px;border-radius:10px;border:1.5px solid var(--border);
+  background:#0a0a18;color:var(--muted);cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;
+  text-align:center;transition:all .25s}
+.st.sw{border-color:#e67e22;color:#e67e22;background:#e67e2210}
+.st.sp{border-color:var(--green);color:var(--green);background:#2ecc7110}
+.st.sc{border-color:var(--red);color:var(--red);background:#e74c3c10}
 
-/* ── LOGO ── */
-.logo-drop{border:1.5px dashed #c8a84b28;border-radius:12px;padding:20px;
-  text-align:center;cursor:pointer;transition:all .3s;margin-bottom:14px;position:relative}
-.logo-drop:hover{border-color:var(--gold);background:#c8a84b08}
-.logo-drop input{display:none}
-.logo-drop p{color:var(--muted);font-size:13px}
-#lp{max-width:100px;max-height:50px;margin:10px auto 0;display:none;border-radius:6px}
-.rmv-logo{position:absolute;top:8px;left:8px;background:#e74c3c20;border:none;
-  color:var(--red);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:12px;display:none}
+/* LOGO */
+.logo-z{border:1.5px dashed #c9a84c25;border-radius:12px;padding:22px;
+  text-align:center;cursor:pointer;transition:all .25s;margin-bottom:16px}
+.logo-z:hover{border-color:var(--gold);background:#c9a84c06}
+.logo-z input{display:none}
+.logo-z p{color:var(--muted);font-size:13px}
+#lp{max-width:110px;max-height:55px;margin:10px auto 0;display:none;border-radius:6px}
 
-/* ── STATUS ── */
-.stat-btns{display:flex;gap:8px;margin-bottom:16px}
-.sb{flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--border);
-  background:var(--ink);color:var(--muted);cursor:pointer;
-  font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;
-  text-align:center;transition:all .3s}
-.sb.p{border-color:#f39c12;color:#f39c12;background:#f39c1212}
-.sb.d{border-color:var(--green);color:var(--green);background:#27ae6012}
-.sb.c{border-color:var(--red);color:var(--red);background:#c0392b12}
-
-/* ── ITEMS ── */
-.itm{background:var(--ink);border:1px solid var(--border);border-radius:12px;
-  padding:14px;margin-bottom:10px;animation:up .3s ease;transition:border .3s}
-.itm:hover{border-color:#c8a84b22}
-.ig{display:grid;grid-template-columns:3fr 1fr 1fr auto auto;gap:8px;align-items:center}
+/* ITEMS */
+.itm{background:#0a0a18;border:1px solid var(--border);border-radius:12px;
+  padding:14px;margin-bottom:10px;transition:border .25s}
+.itm:hover{border-color:#c9a84c20}
+.ig{display:grid;grid-template-columns:3fr 80px 100px auto auto;gap:10px;align-items:center}
 .ig input{margin-bottom:0}
-.itotal{background:#c8a84b12;border:1px solid #c8a84b28;color:var(--gold);
-  border-radius:8px;padding:11px 10px;font-size:13px;font-weight:700;text-align:center;white-space:nowrap}
-.bdel{background:#e74c3c12;border:1px solid #e74c3c28;color:var(--red);
-  border-radius:8px;padding:11px;cursor:pointer;font-size:14px;transition:all .3s}
+.isum{background:#c9a84c12;border:1px solid #c9a84c25;color:var(--gold);
+  border-radius:8px;padding:13px 10px;font-size:13px;font-weight:700;
+  text-align:center;white-space:nowrap}
+.bdel{background:#e74c3c12;border:1px solid #e74c3c25;color:var(--red);
+  border-radius:8px;padding:13px 12px;cursor:pointer;font-size:15px;transition:all .25s}
 .bdel:hover{background:var(--red);color:#fff}
-.ilbls{display:grid;grid-template-columns:3fr 1fr 1fr auto auto;gap:8px;margin-bottom:8px;padding:0 2px}
-.ilbls span{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.ilbl{display:grid;grid-template-columns:3fr 80px 100px auto auto;
+  gap:10px;margin-bottom:10px;padding:0 4px}
+.ilbl span{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
 
-/* ── DISCOUNT ── */
-.disc-row{display:flex;gap:10px;align-items:center;margin-top:12px}
-.disc-row input,.disc-row select{margin-bottom:0;flex:1}
-.dtog{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);
-  padding:12px 16px;border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;
-  font-size:13px;white-space:nowrap;transition:all .3s;flex-shrink:0}
-.dtog.on{background:#c8a84b15;border-color:var(--gold);color:var(--gold)}
+/* DISCOUNT */
+.drow{display:flex;gap:10px;align-items:center;margin-top:14px}
+.drow input,.drow select{margin-bottom:0;flex:1}
+.dtog{background:#0a0a18;border:1.5px solid var(--border);color:var(--muted);
+  padding:13px 16px;border-radius:10px;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:13px;white-space:nowrap;transition:all .25s}
+.dtog.on{border-color:var(--gold);color:var(--gold);background:#c9a84c10}
 
-/* ── SUMMARY BOX ── */
-.smry{background:var(--ink);border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:16px}
-.sr{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;color:var(--muted);
-  border-bottom:1px solid #ffffff06}
-.sr:last-child{border-bottom:none}
-.sr.disc{color:var(--green)}
-.sr.ttl{font-size:20px;font-weight:900;color:var(--gold);padding-top:14px;margin-top:6px;
-  border-top:1px solid var(--border)!important}
+/* SUMMARY */
+.smry{background:#0a0a18;border:1px solid var(--border);border-radius:12px;
+  padding:18px;margin-top:16px}
+.sr{display:flex;justify-content:space-between;padding:7px 0;
+  font-size:14px;color:var(--muted);border-bottom:1px solid #ffffff05}
+.sr:last-child{border:none}
+.sr.dsc{color:var(--green)}
+.sr.tot{font-size:21px;font-weight:900;color:var(--gold);
+  padding-top:14px;margin-top:6px;border-top:1px solid var(--border)!important}
 
-/* ── BUTTONS ── */
-.badd{width:100%;padding:13px;background:transparent;border:1.5px dashed #c8a84b35;
-  color:var(--gold);border-radius:10px;cursor:pointer;font-family:'Cairo',sans-serif;
-  font-size:14px;font-weight:600;transition:all .3s;margin-top:6px}
-.badd:hover{background:#c8a84b0e;border-color:var(--gold)}
+/* BUTTONS */
+.badd{width:100%;padding:13px;background:transparent;
+  border:1.5px dashed #c9a84c30;color:var(--gold);border-radius:10px;
+  cursor:pointer;font-family:'Cairo',sans-serif;font-size:14px;
+  font-weight:600;transition:all .25s;margin-top:6px}
+.badd:hover{background:#c9a84c0c;border-color:var(--gold)}
+
 .bgen{width:100%;padding:18px;border:none;border-radius:14px;
   font-family:'Cairo',sans-serif;font-size:18px;font-weight:900;cursor:pointer;
-  background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2),var(--gold));
-  background-size:300% 300%;animation:gs 4s ease infinite;
-  color:#000;letter-spacing:.5px;
-  box-shadow:0 4px 30px #c8a84b30;transition:all .3s}
-.bgen:hover{transform:translateY(-3px);box-shadow:0 10px 45px #c8a84b50}
-@keyframes gs{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  background:linear-gradient(135deg,var(--gold3),var(--gold),var(--gold2));
+  background-size:200% 200%;animation:gs 3s ease infinite;
+  color:#000;box-shadow:0 4px 28px #c9a84c28;transition:transform .25s,box-shadow .25s}
+.bgen:hover{transform:translateY(-3px);box-shadow:0 10px 40px #c9a84c45}
+@keyframes gs{0%,100%{background-position:0%}50%{background-position:100%}}
 
-/* ══════════════════════════════
-   INVOICE PREVIEW
-══════════════════════════════ */
+/* ═══════════════════════
+   INVOICE
+═══════════════════════ */
 #inv{display:none;margin-top:28px;border-radius:20px;overflow:hidden;
-  box-shadow:0 30px 100px #00000090;animation:up .5s ease}
+  box-shadow:0 30px 90px #00000085}
 
 .iw{background:#fff;color:#111;font-family:'Cairo',sans-serif}
 
-/* Invoice Top Bar */
-.i-topbar{height:6px}
+.i-bar{height:5px}
 
-/* Invoice Head */
-.i-head{padding:38px 44px 28px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
-.i-brand{flex:1}
-.i-brand img{max-width:90px;max-height:45px;display:block;margin-bottom:10px}
-.i-brand-name{font-size:22px;font-weight:900;color:#111;line-height:1}
-.i-brand-det{font-size:12px;color:#888;margin-top:4px;line-height:1.8}
+.i-head{padding:36px 42px 24px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.i-logo img{max-width:90px;max-height:45px;display:block;margin-bottom:8px}
+.i-co{font-size:20px;font-weight:900;color:#111}
+.i-co-d{font-size:12px;color:#999;margin-top:4px;line-height:1.8}
 .i-right{text-align:left;flex-shrink:0}
-.i-word{font-family:'Amiri',serif;font-size:38px;font-weight:700;line-height:1;letter-spacing:-1px}
-.i-num{font-size:12px;color:#999;margin-top:6px;letter-spacing:.5px}
+.i-word{font-family:'Amiri',serif;font-size:36px;font-weight:700;line-height:1;letter-spacing:-1px}
+.i-meta{font-size:12px;color:#aaa;margin-top:6px;line-height:2}
 
-/* Divider */
-.i-div{height:3px;margin:0 44px}
+.i-line{height:3px;margin:0 42px}
 
-/* Stamp */
-.i-stamp-wrap{padding:0 44px;height:28px;position:relative}
-.i-stamp{position:absolute;top:-10px;
+.i-stamp-row{padding:0 42px;height:30px;position:relative}
+.i-stamp{position:absolute;top:-10px;left:42px;
   padding:5px 18px;border-radius:5px;font-size:11px;font-weight:900;
-  letter-spacing:3px;text-transform:uppercase;border:2.5px solid;
-  transform:rotate(-2.5deg);opacity:.9;left:44px}
-.sp{color:#27ae60;border-color:#27ae60;background:#27ae6010}
-.sw{color:#e67e22;border-color:#e67e22;background:#e67e2210}
-.sc{color:#c0392b;border-color:#c0392b;background:#c0392b10}
+  letter-spacing:3px;text-transform:uppercase;
+  border:2.5px solid;transform:rotate(-2deg);opacity:.85}
+.sp-p{color:#27ae60;border-color:#27ae60;background:#27ae6010}
+.sp-w{color:#e67e22;border-color:#e67e22;background:#e67e2210}
+.sp-c{color:#e74c3c;border-color:#e74c3c;background:#e74c3c10}
 
-/* Parties */
-.i-parties{padding:22px 44px;display:flex;justify-content:space-between;background:#f8f8fc;gap:20px}
-.i-party h6{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#bbb;margin-bottom:8px}
-.i-party .pname{font-size:16px;font-weight:800;color:#111}
-.i-party .pdet{font-size:12px;color:#777;margin-top:3px;line-height:1.7}
+.i-parties{display:flex;justify-content:space-between;
+  padding:20px 42px;background:#f8f8fc;gap:16px}
+.i-party h6{font-size:9px;letter-spacing:3px;color:#bbb;
+  text-transform:uppercase;margin-bottom:8px}
+.i-party .pn{font-size:16px;font-weight:800;color:#111}
+.i-party .pd{font-size:12px;color:#777;margin-top:3px;line-height:1.7}
 
-/* Table */
-.i-tbl{padding:10px 44px 24px}
-table{width:100%;border-collapse:collapse;margin-top:16px}
-thead tr th{padding:13px 15px;text-align:right;font-size:10px;letter-spacing:1.5px;
-  text-transform:uppercase;color:#fff;font-weight:700}
-tbody tr td{padding:14px 15px;text-align:right;font-size:14px;color:#333;
-  border-bottom:1px solid #f0f0f0;transition:background .2s}
-tbody tr:hover td{background:#fafafe}
-tbody tr:last-child td{border-bottom:none}
-.td-t{font-weight:800;color:#111}
+.i-tbl{padding:6px 42px 24px}
+table{width:100%;border-collapse:collapse;margin-top:18px}
+thead th{padding:12px 14px;text-align:right;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;color:#fff;font-weight:700}
+tbody td{padding:14px 14px;text-align:right;font-size:14px;
+  color:#333;border-bottom:1px solid #f0f0f8}
+tbody tr:last-child td{border:none}
+tbody tr:hover td{background:#fafafd}
+.tdt{font-weight:800;color:#111}
 
-/* Totals */
-.i-foot{padding:24px 44px;display:flex;justify-content:space-between;
-  align-items:flex-end;gap:24px;border-top:1px solid #efefef}
-.i-note h6{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#ccc;margin-bottom:8px}
-.i-note p{font-size:13px;color:#666;line-height:1.7;max-width:320px}
-.i-tots{min-width:210px}
-.tr{display:flex;justify-content:space-between;font-size:13px;color:#888;padding:5px 0;gap:16px}
-.tr.dsc{color:#27ae60}
-.tr.grd{font-size:22px;font-weight:900;color:#111;padding-top:12px;margin-top:8px;
-  border-top:2.5px solid #111}
+.i-foot{padding:24px 42px;display:flex;justify-content:space-between;
+  align-items:flex-end;gap:20px;border-top:1px solid #efefef}
+.i-note h6{font-size:9px;letter-spacing:3px;color:#ccc;
+  text-transform:uppercase;margin-bottom:8px}
+.i-note p{font-size:13px;color:#666;line-height:1.7;max-width:300px}
+.i-tots .tr{display:flex;justify-content:space-between;
+  font-size:13px;color:#888;padding:5px 0;gap:20px;min-width:200px}
+.i-tots .tr.dc{color:#27ae60}
+.i-tots .tr.gd{font-size:22px;font-weight:900;color:#111;
+  border-top:2.5px solid #111;padding-top:12px;margin-top:8px}
 
-/* QR Placeholder */
-.i-qr{width:60px;height:60px;border:2px solid #eee;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;color:#ddd;flex-shrink:0}
+.i-acts{padding:18px 42px;background:#f8f8fc;display:flex;gap:10px}
+.ba{flex:1;padding:14px;border:none;border-radius:10px;
+  font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s}
+.ba:hover{transform:translateY(-1px)}
+.ba-p{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000}
+.ba-s{background:#111;color:#fff}
 
-/* Actions */
-.i-acts{padding:18px 44px;background:#f8f8fc;display:flex;gap:10px}
-.bact{flex:1;padding:14px;border:none;border-radius:10px;
-  font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s}
-.bact:hover{transform:translateY(-1px)}
-.bact-p{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#000}
-.bact-s{background:#111;color:#fff}
-.bact-c{background:#f0f0f5;color:#555}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:30px;right:50%;transform:translateX(50%);
-  background:#111;color:var(--gold);padding:12px 24px;border-radius:30px;
-  font-size:14px;font-weight:700;border:1px solid var(--gold);
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  background:#111;color:var(--gold);padding:12px 26px;border-radius:30px;
+  font-size:14px;font-weight:700;border:1px solid #c9a84c50;
   opacity:0;transition:opacity .3s;z-index:999;pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1}
+.toast.on{opacity:1}
 
 @media print{
   body *{visibility:hidden}
   #inv,#inv *{visibility:visible}
-  #inv{position:fixed;top:0;left:0;width:100%;border-radius:0;box-shadow:none}
+  #inv{position:fixed;top:0;left:0;width:100%;margin:0;border-radius:0;box-shadow:none}
   .i-acts{display:none}
 }
 @media(max-width:600px){
-  .ig{grid-template-columns:2fr 1fr 1fr auto auto}
-  .i-head{flex-direction:column;gap:10px}.i-right{text-align:right}
-  .i-parties{flex-direction:column}.i-foot{flex-direction:column}
-  .i-head,.i-div,.i-parties,.i-tbl,.i-foot,.i-acts,.i-stamp-wrap{padding-left:20px;padding-right:20px}
+  .g2,.g3{grid-template-columns:1fr}
+  .ig{grid-template-columns:2fr 60px 80px auto auto}
+  .i-head,.i-line,.i-stamp-row,.i-parties,.i-tbl,.i-foot,.i-acts{padding-left:18px;padding-right:18px}
+  .i-head{flex-direction:column}.i-right{text-align:right}
+  .i-parties,.i-foot{flex-direction:column}
+  .i-line{margin:0 18px}
 }
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div class="hdr-eyebrow">Tiger‑X Studio</div>
-  <h1>مولد الفواتير الاحترافي</h1>
-  <p>فاتورة تعكس قيمة عملك الحقيقية</p>
-  <div class="ultra-chip">◈ ULTRA EDITION</div>
+  <div class="hdr-sub">Tiger‑X Studio</div>
+  <h1>مولد الفواتير</h1>
+  <p>فاتورة احترافية في أقل من دقيقة</p>
+  <div class="chip">PRO EDITION</div>
 </div>
 
 <div class="wrap">
 
-  <!-- Steps -->
-  <div class="steps">
-    <div class="stp on" id="s1"><div class="stp-dot">١</div><div class="stp-lbl">الشركة</div></div>
-    <div class="stp-ln" id="l1"></div>
-    <div class="stp" id="s2"><div class="stp-dot">٢</div><div class="stp-lbl">العميل</div></div>
-    <div class="stp-ln" id="l2"></div>
-    <div class="stp" id="s3"><div class="stp-dot">٣</div><div class="stp-lbl">الخدمات</div></div>
-    <div class="stp-ln" id="l3"></div>
-    <div class="stp" id="s4"><div class="stp-dot">٤</div><div class="stp-lbl">الفاتورة</div></div>
-  </div>
-
-  <!-- Customize -->
+  <!-- شركة -->
   <div class="card">
-    <div class="ct">🎨 تخصيص المظهر</div>
-    <label>لون الفاتورة</label>
-    <div class="clrs">
-      <div class="clr on" style="background:#c8a84b" data-c="#c8a84b" onclick="pc(this)" title="ذهبي"></div>
-      <div class="clr" style="background:#1a1a2e" data-c="#1a1a2e" onclick="pc(this)" title="أسود"></div>
-      <div class="clr" style="background:#1a3a6b" data-c="#1a3a6b" onclick="pc(this)" title="أزرق ملكي"></div>
-      <div class="clr" style="background:#145a32" data-c="#145a32" onclick="pc(this)" title="أخضر داكن"></div>
-      <div class="clr" style="background:#6b1a1a" data-c="#6b1a1a" onclick="pc(this)" title="بوردو"></div>
-      <div class="clr" style="background:#3d1a6b" data-c="#3d1a6b" onclick="pc(this)" title="بنفسجي"></div>
-      <div class="clr" style="background:#0d5c6b" data-c="#0d5c6b" onclick="pc(this)" title="فيروزي"></div>
-      <div class="clr" style="background:#4a4a4a" data-c="#4a4a4a" onclick="pc(this)" title="رمادي"></div>
-    </div>
-    <label>حالة الفاتورة</label>
-    <div class="stat-btns">
-      <div class="sb p" onclick="ps('w',this)">⏳ قيد الانتظار</div>
-      <div class="sb" onclick="ps('p',this)">✅ مدفوعة</div>
-      <div class="sb" onclick="ps('c',this)">❌ ملغية</div>
-    </div>
-  </div>
-
-  <!-- Company -->
-  <div class="card">
-    <div class="ct">🏢 بيانات شركتك</div>
-    <div class="logo-drop" onclick="document.getElementById('li').click()">
-      <p>📷 رفع لوجو الشركة — اختياري</p>
+    <div class="sec">🏢 بيانات شركتك</div>
+    <div class="logo-z" onclick="document.getElementById('li').click()">
+      <p>📷 رفع شعار الشركة — اختياري</p>
       <input type="file" id="li" accept="image/*" onchange="ll(this)">
       <img id="lp" alt="لوجو">
-      <button class="rmv-logo" id="rlb" onclick="rl(event)">✕ إزالة</button>
     </div>
-    <div class="row">
-      <div><label>اسم الشركة</label><input id="cn" placeholder="Tiger-X Studio" oninput="sv();mk(1)"></div>
+    <div class="g2">
+      <div><label>اسم الشركة</label><input id="cn" placeholder="Tiger-X Studio" oninput="sv()"></div>
       <div><label>رقم الهاتف</label><input id="cp" placeholder="01xxxxxxxxx" oninput="sv()"></div>
     </div>
-    <div class="row">
+    <div class="g2">
       <div><label>العنوان</label><input id="ca" placeholder="المنصورة، مصر" oninput="sv()"></div>
-      <div><label>البريد الإلكتروني</label><input id="ce" placeholder="info@example.com" oninput="sv()"></div>
+      <div><label>البريد الإلكتروني</label><input id="ce" placeholder="info@tiger-x.com" oninput="sv()"></div>
     </div>
   </div>
 
-  <!-- Client -->
+  <!-- عميل -->
   <div class="card">
-    <div class="ct">👤 بيانات العميل</div>
-    <div class="row">
-      <div><label>اسم العميل</label><input id="cln" placeholder="محمد أحمد" oninput="mk(2)"></div>
+    <div class="sec">👤 بيانات العميل</div>
+    <div class="g2">
+      <div><label>اسم العميل</label><input id="cln" placeholder="محمد أحمد"></div>
       <div><label>هاتف العميل</label><input id="clp" placeholder="01xxxxxxxxx"></div>
     </div>
-    <div class="row">
+    <div class="g3">
       <div><label>رقم الفاتورة</label><input id="inn" placeholder="INV-001"></div>
-      <div><label>تاريخ الاستحقاق</label><input id="ind" type="date"></div>
-    </div>
-    <div class="row">
+      <div><label>التاريخ</label><input id="ind" type="date"></div>
       <div>
         <label>العملة</label>
         <select id="cur" onchange="cl()">
           <option value="ج.م">🇪🇬 جنيه مصري</option>
-          <option value="$">🇺🇸 دولار أمريكي</option>
+          <option value="$">🇺🇸 دولار</option>
           <option value="€">🇪🇺 يورو</option>
-          <option value="ر.س">🇸🇦 ريال سعودي</option>
-          <option value="د.إ">🇦🇪 درهم إماراتي</option>
+          <option value="ر.س">🇸🇦 ريال</option>
+          <option value="د.إ">🇦🇪 درهم</option>
         </select>
       </div>
+    </div>
+    <div class="g2">
       <div>
         <label>ضريبة القيمة المضافة</label>
         <select id="vat" onchange="cl()">
@@ -333,174 +279,154 @@ tbody tr:last-child td{border-bottom:none}
           <option value="14">14% — مصر</option>
           <option value="15">15%</option>
           <option value="5">5%</option>
-          <option value="10">10%</option>
         </select>
+      </div>
+      <div>
+        <label>حالة الفاتورة</label>
+        <div class="stat">
+          <div class="st sw" id="s1" onclick="ps('w')">⏳ انتظار</div>
+          <div class="st" id="s2" onclick="ps('p')">✅ مدفوعة</div>
+          <div class="st" id="s3" onclick="ps('c')">❌ ملغية</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Items -->
+  <!-- منتجات -->
   <div class="card">
-    <div class="ct">📦 الخدمات والمنتجات</div>
-    <div class="ilbls">
+    <div class="sec">📦 الخدمات والمنتجات</div>
+    <div class="ilbl">
       <span>الوصف</span><span>الكمية</span><span>السعر</span><span>الإجمالي</span><span></span>
     </div>
     <div id="itms"></div>
-    <button class="badd" onclick="ai()">＋ إضافة بند جديد</button>
-
-    <div class="disc-row">
-      <button class="dtog" id="dtg" onclick="td()">🏷️ إضافة خصم</button>
+    <button class="badd" onclick="ai()">＋ إضافة بند</button>
+    <div class="drow">
+      <button class="dtog" id="dtg" onclick="td()">🏷️ خصم</button>
       <input id="dv" placeholder="القيمة" type="number" style="display:none" oninput="cl()">
-      <select id="dt" style="display:none;width:auto" onchange="cl()">
+      <select id="dt" style="display:none;width:120px" onchange="cl()">
         <option value="f">مبلغ ثابت</option>
-        <option value="p">نسبة مئوية %</option>
+        <option value="p">نسبة %</option>
       </select>
     </div>
-
     <div class="smry">
       <div class="sr"><span>المجموع الجزئي</span><span id="sub">—</span></div>
-      <div class="sr disc" id="dsr" style="display:none"><span>خصم</span><span id="dshow">—</span></div>
-      <div class="sr" id="vsr" style="display:none"><span id="vlbl">ضريبة</span><span id="vshow">—</span></div>
-      <div class="sr ttl"><span>الإجمالي الكلي</span><span id="grd">—</span></div>
+      <div class="sr dsc" id="dsr" style="display:none"><span>خصم</span><span id="dsh">—</span></div>
+      <div class="sr" id="vsr" style="display:none"><span id="vlbl">ضريبة</span><span id="vsh">—</span></div>
+      <div class="sr tot"><span>الإجمالي الكلي</span><span id="grd">—</span></div>
     </div>
   </div>
 
-  <!-- Notes -->
+  <!-- ملاحظات -->
   <div class="card">
-    <div class="ct">📝 ملاحظات وشروط الدفع</div>
-    <textarea id="nts" rows="3" placeholder="شكراً لاختياركم Tiger-X Studio — يسعدنا خدمتكم دائماً"></textarea>
-    <button class="bgen" onclick="gen()">✦ إصدار الفاتورة الآن ✦</button>
+    <div class="sec">📝 ملاحظات</div>
+    <textarea id="nts" rows="3" placeholder="شكراً لثقتكم بـ Tiger-X Studio"></textarea>
+    <button class="bgen" onclick="gen()">✦ إصدار الفاتورة ✦</button>
   </div>
 
-  <!-- Invoice -->
+  <!-- الفاتورة -->
   <div id="inv">
     <div class="iw">
-      <div class="i-topbar" id="itb"></div>
+      <div class="i-bar" id="ibar"></div>
       <div class="i-head">
-        <div class="i-brand">
-          <img id="plogo" alt="" style="display:none">
-          <div class="i-brand-name" id="pcn"></div>
-          <div class="i-brand-det" id="pcd"></div>
+        <div class="i-logo">
+          <img id="plog" alt="" style="display:none">
+          <div class="i-co" id="pcn"></div>
+          <div class="i-co-d" id="pcd"></div>
         </div>
         <div class="i-right">
-          <div class="i-word" id="pword">فاتورة</div>
-          <div class="i-num" id="pnum"></div>
-          <div class="i-num" id="pdate"></div>
+          <div class="i-word" id="pwd">فاتورة</div>
+          <div class="i-meta" id="pmt"></div>
         </div>
       </div>
-
-      <div class="i-div" id="idiv"></div>
-      <div class="i-stamp-wrap"><div class="i-stamp" id="istamp"></div></div>
-
+      <div class="i-line" id="iln"></div>
+      <div class="i-stamp-row"><div class="i-stamp" id="ist"></div></div>
       <div class="i-parties">
         <div class="i-party">
-          <h6>مُصدر من</h6>
-          <div class="pname" id="pfrom"></div>
-          <div class="pdet" id="pfromd"></div>
+          <h6>من</h6>
+          <div class="pn" id="pfr"></div>
+          <div class="pd" id="pfrd"></div>
         </div>
         <div class="i-party" style="text-align:left">
-          <h6>مُرسل إلى</h6>
-          <div class="pname" id="pcl"></div>
-          <div class="pdet" id="pcld"></div>
+          <h6>إلى</h6>
+          <div class="pn" id="pcl"></div>
+          <div class="pd" id="pcld"></div>
         </div>
       </div>
-
       <div class="i-tbl">
         <table>
-          <thead><tr id="pthead"></tr></thead>
-          <tbody id="ptbody"></tbody>
+          <thead><tr id="pth"></tr></thead>
+          <tbody id="ptb"></tbody>
         </table>
       </div>
-
       <div class="i-foot">
         <div class="i-note">
           <h6>ملاحظات</h6>
-          <p id="pnts"></p>
+          <p id="pnt"></p>
         </div>
-        <div style="display:flex;gap:20px;align-items:flex-end">
-          <div class="i-qr">⬛</div>
-          <div class="i-tots">
-            <div class="tr"><span>المجموع</span><span id="psub"></span></div>
-            <div class="tr dsc" id="pdsr" style="display:none"><span>خصم</span><span id="pdisc"></span></div>
-            <div class="tr" id="pvsr" style="display:none"><span id="pvlbl">ضريبة</span><span id="pvat"></span></div>
-            <div class="tr grd"><span>الإجمالي</span><span id="pgrd"></span></div>
-          </div>
+        <div class="i-tots">
+          <div class="tr"><span>المجموع</span><span id="psb"></span></div>
+          <div class="tr dc" id="pdr" style="display:none"><span>خصم</span><span id="pdc"></span></div>
+          <div class="tr" id="pvr" style="display:none"><span id="pvl">ضريبة</span><span id="pvt"></span></div>
+          <div class="tr gd"><span>الإجمالي</span><span id="pgd"></span></div>
         </div>
       </div>
-
       <div class="i-acts">
-        <button class="bact bact-p" onclick="window.print()">🖨️ طباعة / PDF</button>
-        <button class="bact bact-s" onclick="sh()">📤 مشاركة</button>
-        <button class="bact bact-c" onclick="cp2()">📋 نسخ الرابط</button>
+        <button class="ba ba-p" onclick="window.print()">🖨️ طباعة / PDF</button>
+        <button class="ba ba-s" onclick="sh()">📤 مشاركة</button>
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="toast" id="tst"></div>
 
 <script>
-let C='#c8a84b', ST='w', LOGO=null, DON=false;
+const $=id=>document.getElementById(id);
+const v=id=>$(id).value;
+let ST='w', LOGO=null, DON=false;
 
 window.onload=()=>{
-  document.getElementById('ind').valueAsDate=new Date();
-  const d=JSON.parse(localStorage.getItem('tix')||'{}');
-  ['cn','cp','ca','ce'].forEach(k=>{ if(d[k]) document.getElementById(k).value=d[k]; });
+  $('ind').valueAsDate=new Date();
+  const d=JSON.parse(localStorage.getItem('tx')||'{}');
+  ['cn','cp','ca','ce'].forEach(k=>{ if(d[k]) $(k).value=d[k]; });
   ai();
 };
 
-const v=id=>document.getElementById(id).value;
-const $=id=>document.getElementById(id);
-
 function sv(){
-  localStorage.setItem('tix',JSON.stringify({cn:v('cn'),cp:v('cp'),ca:v('ca'),ce:v('ce')}));
-}
-
-function mk(n){
-  for(let i=1;i<=n;i++){
-    $('s'+i).classList.add('dn'); $('s'+i).classList.remove('on');
-    $('s'+i).querySelector('.stp-dot').textContent='✓';
-    if(i<4) $('l'+i).classList.add('dn');
-  }
-  if(n<4){ $('s'+(n+1)).classList.add('on'); }
-}
-
-function pc(el){
-  document.querySelectorAll('.clr').forEach(d=>d.classList.remove('on'));
-  el.classList.add('on'); C=el.dataset.c;
-}
-
-function ps(s,el){
-  ST=s;
-  document.querySelectorAll('.sb').forEach(b=>b.className='sb');
-  el.classList.add(s);
+  localStorage.setItem('tx',JSON.stringify({cn:v('cn'),cp:v('cp'),ca:v('ca'),ce:v('ce')}));
 }
 
 function ll(inp){
   const r=new FileReader();
-  r.onload=e=>{
-    LOGO=e.target.result;
-    $('lp').src=LOGO; $('lp').style.display='block';
-    $('rlb').style.display='block';
-  };
+  r.onload=e=>{ LOGO=e.target.result; $('lp').src=LOGO; $('lp').style.display='block'; };
   r.readAsDataURL(inp.files[0]);
 }
 
-function rl(e){
-  e.stopPropagation(); LOGO=null;
-  $('lp').style.display='none'; $('rlb').style.display='none';
-  $('li').value='';
+function ps(s){
+  ST=s;
+  ['s1','s2','s3'].forEach(id=>$( id).className='st');
+  const mp={w:'s1 sw',p:'s2 sp',c:'s3 sc'};
+  const [id,cls]=mp[s].split(' ');
+  $(id).className='st '+cls;
+}
+
+// Fix ps to handle correctly
+function ps(s){
+  ST=s;
+  $('s1').className='st'; $('s2').className='st'; $('s3').className='st';
+  if(s==='w') $('s1').className='st sw';
+  if(s==='p') $('s2').className='st sp';
+  if(s==='c') $('s3').className='st sc';
 }
 
 function ai(){
   const d=document.createElement('div');
   d.className='itm';
   d.innerHTML=`<div class="ig">
-    <input placeholder="وصف الخدمة أو المنتج" class="in" oninput="cl();mk(3)">
+    <input placeholder="وصف الخدمة أو المنتج" class="in" oninput="cl()">
     <input placeholder="١" class="iq" type="number" min="1" value="1" oninput="cl()">
     <input placeholder="٠" class="ip" type="number" oninput="cl()">
-    <div class="itotal it">—</div>
+    <div class="isum it">—</div>
     <button class="bdel" onclick="this.closest('.itm').remove();cl()">✕</button>
   </div>`;
   $('itms').appendChild(d); cl();
@@ -533,22 +459,21 @@ function cl(){
   const vp=parseFloat(v('vat'))||0;
   const va=(sub-disc)*vp/100;
   const grd=sub-disc+va;
-
   $('sub').textContent=fmt(sub);
   $('grd').textContent=fmt(grd);
-  if(DON&&disc>0){$('dsr').style.display='flex';$('dshow').textContent='− '+fmt(disc);}
+  if(DON&&disc>0){$('dsr').style.display='flex';$('dsh').textContent='− '+fmt(disc);}
   else $('dsr').style.display='none';
-  if(vp>0){$('vsr').style.display='flex';$('vlbl').textContent=`ضريبة ${vp}%`;$('vshow').textContent=fmt(va);}
+  if(vp>0){$('vsr').style.display='flex';$('vlbl').textContent=`ضريبة ${vp}%`;$('vsh').textContent=fmt(va);}
   else $('vsr').style.display='none';
 }
 
 function toast(msg){
-  const t=$('tst'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+  const t=$('tst'); t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2500);
 }
 
 function gen(){
-  mk(4);
+  const C='#c9a84c';
   const cr=cur();
   let sub=0,rows='';
   document.querySelectorAll('.itm').forEach(c=>{
@@ -556,7 +481,7 @@ function gen(){
     const q=parseFloat(c.querySelector('.iq').value)||1;
     const p=parseFloat(c.querySelector('.ip').value)||0;
     const t=q*p; sub+=t;
-    rows+=`<tr><td>${nm}</td><td>${q}</td><td>${p.toLocaleString()} ${cr}</td><td class="td-t">${t.toLocaleString()} ${cr}</td></tr>`;
+    rows+=`<tr><td>${nm}</td><td>${q}</td><td>${p.toLocaleString()} ${cr}</td><td class="tdt">${t.toLocaleString()} ${cr}</td></tr>`;
   });
   const dv2=DON?(parseFloat(v('dv'))||0):0;
   const disc=DON?(v('dt')==='p'?sub*dv2/100:dv2):0;
@@ -564,55 +489,45 @@ function gen(){
   const va=(sub-disc)*vp/100;
   const grd=sub-disc+va;
 
-  // Apply color
-  $('itb').style.background=`linear-gradient(90deg,${C}88,${C},${C}88)`;
-  $('idiv').style.background=`linear-gradient(90deg,${C}55,${C},${C}55)`;
-  $('pword').style.color=C;
-  $('pgrd').style.color=C;
-  $('pthead').innerHTML=`<th style="background:${C}">الخدمة/المنتج</th><th style="background:${C}">الكمية</th><th style="background:${C}">السعر</th><th style="background:${C}">الإجمالي</th>`;
+  $('ibar').style.background=`linear-gradient(90deg,${C}60,${C},${C}60)`;
+  $('iln').style.background=`linear-gradient(90deg,${C}40,${C},${C}40)`;
+  $('pwd').style.color=C;
+  $('pgd').style.color=C;
+  $('pth').innerHTML=`<th style="background:${C}">الخدمة</th><th style="background:${C}">الكمية</th><th style="background:${C}">السعر</th><th style="background:${C}">الإجمالي</th>`;
 
-  // Stamp
-  const stmap={w:['⏳ قيد الانتظار','sw'],p:['✅ مدفوعة','sp'],c:['❌ ملغية','sc']};
-  const [stxt,scls]=stmap[ST];
-  $('istamp').textContent=stxt; $('istamp').className='i-stamp '+scls;
+  const stm={w:['⏳ قيد الانتظار','sp-w'],p:['✅ مدفوعة','sp-p'],c:['❌ ملغية','sp-c']};
+  const [stxt,scl]=stm[ST];
+  $('ist').textContent=stxt; $('ist').className='i-stamp '+scl;
 
-  // Logo
-  if(LOGO){$('plogo').src=LOGO;$('plogo').style.display='block';}
-  else $('plogo').style.display='none';
+  if(LOGO){$('plog').src=LOGO;$('plog').style.display='block';}
+  else $('plog').style.display='none';
 
-  // Data
   $('pcn').textContent=v('cn')||'Tiger-X Studio';
   $('pcd').innerHTML=[v('ca'),v('cp'),v('ce')].filter(Boolean).join('<br>');
-  $('pword').textContent='فاتورة';
-  $('pnum').textContent='رقم: '+(v('inn')||'001');
-  $('pdate').textContent='التاريخ: '+v('ind');
-  $('pfrom').textContent=v('cn')||'Tiger-X Studio';
-  $('pfromd').innerHTML=[v('ca'),v('cp')].filter(Boolean).join('<br>');
+  $('pwd').textContent='فاتورة';
+  $('pmt').innerHTML=`رقم: ${v('inn')||'001'}<br>التاريخ: ${v('ind')}`;
+  $('pfr').textContent=v('cn')||'Tiger-X Studio';
+  $('pfrd').innerHTML=[v('ca'),v('cp')].filter(Boolean).join('<br>');
   $('pcl').textContent=v('cln')||'—';
   $('pcld').textContent=v('clp');
-  $('ptbody').innerHTML=rows;
-  $('psub').textContent=fmt(sub);
-  $('pgrd').textContent=fmt(grd);
-  $('pnts').textContent=v('nts');
+  $('ptb').innerHTML=rows;
+  $('psb').textContent=fmt(sub);
+  $('pgd').textContent=fmt(grd);
+  $('pnt').textContent=v('nts');
 
-  if(disc>0){$('pdsr').style.display='flex';$('pdisc').textContent='− '+fmt(disc);}
-  else $('pdsr').style.display='none';
-  if(vp>0){$('pvsr').style.display='flex';$('pvlbl').textContent=`ضريبة ${vp}%`;$('pvat').textContent=fmt(va);}
-  else $('pvsr').style.display='none';
+  if(disc>0){$('pdr').style.display='flex';$('pdc').textContent='− '+fmt(disc);}
+  else $('pdr').style.display='none';
+  if(vp>0){$('pvr').style.display='flex';$('pvl').textContent=`ضريبة ${vp}%`;$('pvt').textContent=fmt(va);}
+  else $('pvr').style.display='none';
 
-  const el=$('inv');
-  el.style.display='block';
-  el.scrollIntoView({behavior:'smooth'});
-  toast('✅ تم إصدار الفاتورة بنجاح');
+  $('inv').style.display='block';
+  $('inv').scrollIntoView({behavior:'smooth'});
+  toast('✅ تم إصدار الفاتورة');
 }
 
 function sh(){
   if(navigator.share) navigator.share({title:'فاتورة Tiger-X',url:location.href});
-  else cp2();
-}
-
-function cp2(){
-  navigator.clipboard.writeText(location.href).then(()=>toast('📋 تم نسخ الرابط'));
+  else{ navigator.clipboard.writeText(location.href); toast('📋 تم نسخ الرابط'); }
 }
 </script>
 </body>
